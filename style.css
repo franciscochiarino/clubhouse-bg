@@ -1,0 +1,30 @@
+#header > .header-container {
+  background: var(--navBackgroundColor) !important;
+}
+
+#dashboard .info-card,
+span.column-name {
+  color: #fff;
+}
+
+.column > .column-bucket {
+  padding-right: 8px;
+}
+
+
+/* Sidebar */
+
+.story-cards-v2 #sidebar .filters-expand-and-collapse-all h2,
+.story-cards-v2 #sidebar .list-nav-item.space,
+.story-cards-v2 #sidebar .list-nav-item,
+.story-cards-v2 #sidebar h3 {
+  color: #fff !important;
+}
+
+.action.flat-white {
+  background-color: #fff !important;
+}
+
+.story-cards-v2 #sidebar {
+  background: #39396e !important;
+}
