@@ -1,45 +1,47 @@
 {
-  "name": "Clubhouse Background",
+  "name": "wg-gesucht",
   "version": "1.0",
-  "description": "Change the background in Clubhouse",
+  "description": "Trigger notification when a new place is uploaded",
   "permissions": [
     "activeTab",
     "declarativeContent",
-    "storage"
+    "storage",
+    "notifications"
   ],
-  "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": true
-  },
   "content_scripts": [
     {
       "matches": [
-        "https://app.clubhouse.io/*"
+        "https://www.wg-gesucht.de/*"
       ],
       "css": [
         "style.css"
       ],
       "js": [
-        "clubhouse.js"
+        "script.js"
       ]
     }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "web_accessible_resources": [
+    "audio/notification.wav"
   ],
   "page_action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "images/get_started16.png",
-      "32": "images/get_started32.png",
-      "48": "images/get_started48.png",
-      "128": "images/get_started128.png"
+      "16": "images/home16.png",
+      "32": "images/home32.png",
+      "128": "images/home128.png"
     }
   },
   "icons": {
-    "16": "images/get_started16.png",
-    "32": "images/get_started32.png",
-    "48": "images/get_started48.png",
-    "128": "images/get_started128.png"
+    "16": "images/home16.png",
+    "32": "images/home32.png",
+    "128": "images/home128.png"
   },
   "manifest_version": 2
 }
