@@ -21,7 +21,6 @@
   setTimeout(() => {
     if (lastPostIsRecent()) {
       triggerNotification();
-      alert('New flat uploaded. Reload the page after closing this popup to keep the extension running.');
     } else {
       console.log('No new uploaded, will reload the page...')
       setTimeout(() => {
