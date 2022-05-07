@@ -23,32 +23,40 @@
     return rooms;
   }
 
+  const newRoomAvailable = (firstResult, firstRoomListItem) => {
+    console.log('🚀 ~ firstResult.title == firstRoomListItem.title', firstResult.title == firstRoomListItem.title);
+    console.log('🚀 ~ firstResult.wasContacted', firstResult.wasContacted);
+    console.log('🚀 ~ firstResult.wasClicked', firstResult.wasClicked);
+    return (
+      !(
+        firstResult.title == firstRoomListItem.title ||
+        firstResult.wasContacted ||
+        firstResult.wasClicked
+      )
+    )
+  }
+
+  const reloadPage = (timeForReload) => {
+    setTimeout(() => location.reload(), timeForReload)
+  }
+
+  const handlePosts = () => {
+    const results = getResults();
+    const firstResult = results[0];
+    const firstRoomListItem = localRoomList[0];
+
+    if (newRoomAvailable(firstResult, firstRoomListItem)) {
+      localStorage.setItem('roomList', JSON.stringify(results));
+      triggerNotification();
+      reloadPage(300000);
+    } else {
+      console.log('continue search')
+      reloadPage(10000);
+    }
+  }
+
   const removeAdds = () => {
     document.getElementById('partners_wrapper').style.display = 'none';
-  };
-
-  const lookForNewPosts = () => {
-    setTimeout(() => {
-      if (isLastPostRecent()) {
-        triggerNotification();
-      } else {
-        console.log('No new uploaded, will reload the page...')
-        setTimeout(() => {
-          location.reload()
-        }, 10000)
-      }
-    }, 3000);
-  };
-
-  const isLastPostRecent = () => {
-    const uploadTimeText = document.querySelector('.offer_list_item .row .card_body .bottom .col-xs-9 .row:last-child .col-sm-12 span:last-child').innerText;
-    const timeSinceUpload = parseInt(uploadTimeText.split(' ')[1]);
-
-    return (
-      timeSinceUpload < 5 && uploadTimeText.includes('Minuten') ||
-      uploadTimeText.includes('Online: 1 Minute') ||
-      uploadTimeText.includes('Sekunden')
-    )
   };
 
   const triggerNotification = () => {
@@ -64,11 +72,8 @@
   removeAdds();
 
   if (localRoomList) {
-    console.log(localRoomList[0]);
+    handlePosts();
   } else {
     localStorage.setItem('roomList', JSON.stringify(getResults()));
   }
-
-  getResults();
-  lookForNewPosts();
 }
