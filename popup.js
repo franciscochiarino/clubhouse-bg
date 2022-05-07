@@ -18,4 +18,4 @@ const toggleExtension = function () {
     alert('clicked')
   }
 };
-toggleExtension()
+toggleExtension();

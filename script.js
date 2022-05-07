@@ -1,5 +1,20 @@
 {
-  document.getElementById('partners_wrapper').style.display = 'none';
+  const removeAdds = () => {
+    document.getElementById('partners_wrapper').style.display = 'none';
+  };
+
+  const lookForNewPosts = () => {
+    setTimeout(() => {
+      if (isLastPostRecent()) {
+        triggerNotification();
+      } else {
+        console.log('No new uploaded, will reload the page...')
+        setTimeout(() => {
+          location.reload()
+        }, 10000)
+      }
+    }, 3000);
+  };
 
   const isLastPostRecent = () => {
     const uploadTimeText = document.querySelector('.offer_list_item .row .card_body .bottom .col-xs-9 .row:last-child .col-sm-12 span:last-child').innerText;
@@ -10,7 +25,7 @@
       uploadTimeText.includes('Online: 1 Minute') ||
       uploadTimeText.includes('Sekunden')
     )
-  }
+  };
 
   const triggerNotification = () => {
     const fiveMinutes = 300000;
@@ -20,16 +35,8 @@
 
     port.postMessage("triggerNotification");
     setTimeout(() => location.reload(), fiveMinutes);
-  }
+  };
 
-  setTimeout(() => {
-    if (isLastPostRecent()) {
-      triggerNotification();
-    } else {
-      console.log('No new uploaded, will reload the page...')
-      setTimeout(() => {
-        location.reload()
-      }, 10000)
-    }
-  }, 3000);
+  removeAdds();
+  lookForNewPosts();
 }
