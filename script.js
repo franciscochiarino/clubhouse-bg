@@ -1,4 +1,25 @@
 {
+  class Room {
+    constructor(title, wasContacted, wasClicked = false) {
+      this.title = title;
+      this.wasContacted = wasContacted;
+      this.wasClicked = wasClicked;
+    }
+  }
+
+  const getResults = () => {
+    const results = [...document.querySelectorAll('.offer_list_item')];
+
+    const rooms = results.map(result => {
+      return (
+        new Room(
+          document.querySelector(`#${result.id} .truncate_title`).title,
+          document.querySelector(`#${result.id} .ribbon-contacted`) ? true : false
+        )
+      )
+    })
+  }
+
   const removeAdds = () => {
     document.getElementById('partners_wrapper').style.display = 'none';
   };
@@ -38,5 +59,6 @@
   };
 
   removeAdds();
+  getResults();
   lookForNewPosts();
 }
