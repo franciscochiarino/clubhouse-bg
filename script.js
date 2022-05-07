@@ -1,4 +1,6 @@
 {
+  const localRoomList = JSON.parse(localStorage.getItem('roomList'));
+
   class Room {
     constructor(title, wasContacted, wasClicked = false) {
       this.title = title;
@@ -9,7 +11,6 @@
 
   const getResults = () => {
     const results = [...document.querySelectorAll('.offer_list_item')];
-
     const rooms = results.map(result => {
       return (
         new Room(
@@ -17,7 +18,9 @@
           document.querySelector(`#${result.id} .ribbon-contacted`) ? true : false
         )
       )
-    })
+    });
+
+    return rooms;
   }
 
   const removeAdds = () => {
@@ -59,6 +62,13 @@
   };
 
   removeAdds();
+
+  if (localRoomList) {
+    console.log(localRoomList[0]);
+  } else {
+    localStorage.setItem('roomList', JSON.stringify(getResults()));
+  }
+
   getResults();
   lookForNewPosts();
 }
