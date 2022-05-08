@@ -4,6 +4,12 @@
 
 **feature** - Prevent notification from being triggered when a room was already clicked.
 
+**feature** - Open link in a new tab when new post is found.
+
+**feature** - Colour console.log messages.
+
+**change**  - Change notification sound.
+
 ## Release 07.05.2022
 
 ### Change logic
