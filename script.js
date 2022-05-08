@@ -23,6 +23,15 @@
     return rooms;
   }
 
+  const markRoomAsClicked = (roomLink) => {
+    const roomTitle = roomLink.innerText;
+    const localRoomList = JSON.parse(localStorage.getItem('roomList'));
+    const clickedRoom = localRoomList.find(room => room.title == roomTitle);
+
+    clickedRoom.wasClicked = true;
+    localStorage.setItem('roomList', localRoomList);
+  }
+
   const newRoomAvailable = (firstResult, firstRoomListItem) => {
     console.log('🚀 ~ firstResult.title == firstRoomListItem.title', firstResult.title == firstRoomListItem.title);
     console.log('🚀 ~ firstResult.wasContacted', firstResult.wasContacted);
@@ -55,6 +64,14 @@
     }
   }
 
+  const bindEvent = () => {
+    document.querySelectorAll('.offer_list_item').forEach(card => {
+      card.addEventListener('click', (el) => {
+        markRoomAsClicked(el.target);
+      })
+    })
+  }
+
   const removeAdds = () => {
     document.getElementById('partners_wrapper').style.display = 'none';
   };
@@ -69,6 +86,7 @@
     setTimeout(() => location.reload(), fiveMinutes);
   };
 
+  bindEvent();
   removeAdds();
 
   if (localRoomList) {

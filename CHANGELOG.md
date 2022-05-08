@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Release 08.05.2022
+
+**feature** - Prevent notification from being triggered when a room was already clicked.
+
 ## Release 07.05.2022
 
 ### Change logic
