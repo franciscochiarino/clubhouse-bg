@@ -2,7 +2,8 @@
   const localRoomList = JSON.parse(localStorage.getItem('roomList'));
 
   class Room {
-    constructor(title, wasContacted, wasClicked = false) {
+    constructor(id, title, wasContacted, wasClicked = false) {
+      this.id = id;
       this.title = title;
       this.wasContacted = wasContacted;
       this.wasClicked = wasClicked;
@@ -14,6 +15,7 @@
     const rooms = results.map(result => {
       return (
         new Room(
+          result.id,
           document.querySelector(`#${result.id} .truncate_title`).title,
           document.querySelector(`#${result.id} .ribbon-contacted`) ? true : false
         )
@@ -33,9 +35,6 @@
   }
 
   const newRoomAvailable = (firstResult, firstRoomListItem) => {
-    console.log('🚀 ~ firstResult.title == firstRoomListItem.title', firstResult.title == firstRoomListItem.title);
-    console.log('🚀 ~ firstResult.wasContacted', firstResult.wasContacted);
-    console.log('🚀 ~ firstResult.wasClicked', firstResult.wasClicked);
     return (
       !(
         firstResult.title == firstRoomListItem.title ||
@@ -52,8 +51,17 @@
     localStorage.setItem('roomList', JSON.stringify(localRoomList));
   }
 
-  const reloadPage = (timeForReload) => {
-    setTimeout(() => location.reload(), timeForReload)
+  const openInNewTab = (cardId) => {
+    const postUrl = document.querySelector(`#${cardId} .truncate_title a`).href;
+
+    window.open(postUrl, '_blank');
+  }
+
+  const logMessage = (msg) => {
+    console.log(
+      `%c${msg}`,
+      'color: orange; font-size: 12px;'
+    );
   }
 
   const handlePosts = () => {
@@ -63,11 +71,13 @@
     if (newRoomAvailable(firstResult, firstRoomListItem)) {
       updateLocalRoomList(firstResult);
       triggerNotification();
-      reloadPage(300000);
+      openInNewTab(firstResult.id);
+      logMessage('New room opened in a new tab. Will reload page.');
     } else {
-      console.log('continue search')
-      reloadPage(10000);
+      logMessage('No new room available. Will reload page.');
     }
+
+    setTimeout(() => location.reload(), 15000);
   }
 
   const bindEvent = () => {
@@ -80,7 +90,7 @@
 
   const removeAdds = () => {
     document.getElementById('partners_wrapper').style.display = 'none';
-  };
+  }
 
   const triggerNotification = () => {
     const fiveMinutes = 300000;
@@ -90,10 +100,11 @@
 
     port.postMessage("triggerNotification");
     setTimeout(() => location.reload(), fiveMinutes);
-  };
+  }
 
   const results = getResults();
 
+  logMessage('WG-Gesucht extension:');
   bindEvent();
   removeAdds();
 
@@ -101,5 +112,6 @@
     handlePosts();
   } else {
     localStorage.setItem('roomList', JSON.stringify(results));
+    logMessage('Saved results to local storage');
   }
 }
