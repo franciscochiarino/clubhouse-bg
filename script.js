@@ -29,7 +29,7 @@
     const clickedRoom = localRoomList.find(room => room.title == roomTitle);
 
     clickedRoom.wasClicked = true;
-    localStorage.setItem('roomList', localRoomList);
+    localStorage.setItem('roomList', JSON.stringify(localRoomList));
   }
 
   const newRoomAvailable = (firstResult, firstRoomListItem) => {
@@ -45,17 +45,23 @@
     )
   }
 
+  const updateLocalRoomList = (newRoom) => {
+    const localRoomList = JSON.parse(localStorage.getItem('roomList'));
+
+    localRoomList.unshift(newRoom);
+    localStorage.setItem('roomList', JSON.stringify(localRoomList));
+  }
+
   const reloadPage = (timeForReload) => {
     setTimeout(() => location.reload(), timeForReload)
   }
 
   const handlePosts = () => {
-    const results = getResults();
     const firstResult = results[0];
     const firstRoomListItem = localRoomList[0];
 
     if (newRoomAvailable(firstResult, firstRoomListItem)) {
-      localStorage.setItem('roomList', JSON.stringify(results));
+      updateLocalRoomList(firstResult);
       triggerNotification();
       reloadPage(300000);
     } else {
@@ -86,12 +92,14 @@
     setTimeout(() => location.reload(), fiveMinutes);
   };
 
+  const results = getResults();
+
   bindEvent();
   removeAdds();
 
   if (localRoomList) {
     handlePosts();
   } else {
-    localStorage.setItem('roomList', JSON.stringify(getResults()));
+    localStorage.setItem('roomList', JSON.stringify(results));
   }
 }
